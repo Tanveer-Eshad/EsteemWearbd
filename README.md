@@ -1,2 +1,1221 @@
-# EsteemWearbd
-Clothing Brand
+```html
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESTEEM | Haute Couture & Modern Luxury</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Playfair Display & Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        esteem: {
+                            black: '#0D0D0D',
+                            dark: '#141414',
+                            charcoal: '#1E1E1E',
+                            gold: '#D4AF37',
+                            goldLight: '#F3E5AB',
+                            cream: '#FAFAFA',
+                            grayLight: '#F3F4F6',
+                            grayDark: '#2D2D2D'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Smooth Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #141414;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2D2D2D;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #D4AF37;
+        }
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #FFF 0%, #D4AF37 50%, #B38F23 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gold-border-glow:hover {
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
+            border-color: #D4AF37;
+        }
+        /* Custom styling for image overlay zooms */
+        .img-zoom-container {
+            overflow: hidden;
+        }
+        .img-zoom-container img {
+            transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .img-zoom-container:hover img {
+            transform: scale(1.08);
+        }
+    </style>
+</head>
+<body class="bg-esteem-black text-gray-200 font-sans antialiased selection:bg-esteem-gold selection:text-black">
+
+    <!-- Announcement Bar -->
+    <div class="bg-esteem-gold text-black text-xs font-semibold py-2 px-4 text-center tracking-widest uppercase flex justify-between items-center px-6">
+        <span class="hidden md:inline">Complimentary Worldwide Express Shipping on Orders Over $300</span>
+        <span class="mx-auto md:mx-0">Private Atelier Collection Drop 04 // Now Live</span>
+        <div class="hidden md:flex items-center space-x-4">
+            <!-- Currency Switcher -->
+            <select id="currency-select" onchange="changeCurrency(this.value)" class="bg-transparent text-black text-xs font-bold border-none cursor-pointer focus:outline-none">
+                <option value="USD">USD ($)</option>
+                <option value="EUR">EUR (€)</option>
+                <option value="BDT">BDT (৳)</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Main Navigation Header -->
+    <nav class="sticky top-0 z-40 bg-esteem-dark/90 backdrop-blur-md border-b border-neutral-800 transition-all duration-300" id="main-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Mobile Menu Toggle Button -->
+                <button onclick="toggleMobileMenu()" class="lg:hidden text-gray-300 hover:text-white focus:outline-none p-2">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+
+                <!-- Brand Logo -->
+                <a href="#" class="flex items-center space-x-2">
+                    <span class="font-serif text-2xl sm:text-3xl tracking-[0.25em] font-bold text-white uppercase">E S T E E M</span>
+                </a>
+
+                <!-- Desktop Nav Links -->
+                <div class="hidden lg:flex items-center space-x-8 text-xs tracking-[0.2em] font-medium uppercase text-gray-300">
+                    <a href="#hero" class="hover:text-esteem-gold transition duration-200">Home</a>
+                    <a href="#collections" class="hover:text-esteem-gold transition duration-200">Collections</a>
+                    <a href="#shop" class="hover:text-esteem-gold transition duration-200">Catalog</a>
+                    <a href="#about" class="hover:text-esteem-gold transition duration-200">Atelier Story</a>
+                    <a href="#reviews" class="hover:text-esteem-gold transition duration-200">Clientele</a>
+                </div>
+
+                <!-- Navigation Action Controls -->
+                <div class="flex items-center space-x-5">
+                    <!-- Search Icon Trigger -->
+                    <button onclick="toggleSearchModal()" class="text-gray-300 hover:text-esteem-gold transition p-2" title="Search">
+                        <i class="fa-solid fa-magnifying-glass text-lg"></i>
+                    </button>
+
+                    <!-- Wishlist Trigger -->
+                    <button onclick="toggleWishlistDrawer()" class="text-gray-300 hover:text-esteem-gold transition p-2 relative" title="Wishlist">
+                        <i class="fa-regular fa-heart text-lg"></i>
+                        <span id="wishlist-count" class="absolute top-0 right-0 bg-esteem-gold text-black text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center opacity-0 transition-opacity">0</span>
+                    </button>
+
+                    <!-- Cart Trigger -->
+                    <button onclick="toggleCartDrawer()" class="text-gray-300 hover:text-esteem-gold transition p-2 relative" title="Shopping Cart">
+                        <i class="fa-solid fa-bag-shopping text-lg"></i>
+                        <span id="cart-count" class="absolute top-0 right-0 bg-esteem-gold text-black text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Drawer Menu -->
+    <div id="mobile-menu" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden transition-opacity">
+        <div class="bg-esteem-dark w-4/5 max-w-sm h-full p-6 flex flex-col justify-between border-r border-neutral-800">
+            <div>
+                <div class="flex justify-between items-center pb-6 border-b border-neutral-800">
+                    <span class="font-serif text-xl tracking-[0.2em] font-bold text-white uppercase">ESTEEM</span>
+                    <button onclick="toggleMobileMenu()" class="text-gray-400 hover:text-white">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+                <div class="mt-8 flex flex-col space-y-6 text-sm tracking-widest uppercase font-medium">
+                    <a href="#hero" onclick="toggleMobileMenu()" class="hover:text-esteem-gold transition">Home</a>
+                    <a href="#collections" onclick="toggleMobileMenu()" class="hover:text-esteem-gold transition">Collections</a>
+                    <a href="#shop" onclick="toggleMobileMenu()" class="hover:text-esteem-gold transition">Catalog</a>
+                    <a href="#about" onclick="toggleMobileMenu()" class="hover:text-esteem-gold transition">Atelier Story</a>
+                    <a href="#reviews" onclick="toggleMobileMenu()" class="hover:text-esteem-gold transition">Clientele</a>
+                </div>
+            </div>
+            <div class="pt-6 border-t border-neutral-800">
+                <p class="text-xs text-gray-500 uppercase tracking-widest mb-3">Currency</p>
+                <div class="flex space-x-3 text-xs">
+                    <button onclick="changeCurrency('USD')" class="px-3 py-1 bg-neutral-800 text-white rounded hover:bg-esteem-gold hover:text-black">USD ($)</button>
+                    <button onclick="changeCurrency('EUR')" class="px-3 py-1 bg-neutral-800 text-white rounded hover:bg-esteem-gold hover:text-black">EUR (€)</button>
+                    <button onclick="changeCurrency('BDT')" class="px-3 py-1 bg-neutral-800 text-white rounded hover:bg-esteem-gold hover:text-black">BDT (৳)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Overlay Modal -->
+    <div id="search-modal" class="fixed inset-0 bg-black/90 z-50 hidden flex flex-col p-6 items-center pt-20 backdrop-blur-md">
+        <button onclick="toggleSearchModal()" class="absolute top-6 right-8 text-gray-400 hover:text-white text-2xl">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="w-full max-w-2xl">
+            <div class="relative border-b-2 border-esteem-gold pb-2">
+                <input type="text" id="live-search-input" onkeyup="handleLiveSearch()" placeholder="Search suits, gowns, coats, cashmere..." class="w-full bg-transparent text-white text-xl sm:text-2xl placeholder-gray-500 focus:outline-none font-serif">
+                <i class="fa-solid fa-magnifying-glass absolute right-2 top-2 text-esteem-gold text-xl"></i>
+            </div>
+            <p class="text-xs text-gray-400 tracking-widest uppercase mt-4">Popular Searches: <span class="text-white cursor-pointer hover:underline" onclick="quickSearch('Cashmere')">Cashmere</span>, <span class="text-white cursor-pointer hover:underline" onclick="quickSearch('Tuxedo')">Tuxedo</span>, <span class="text-white cursor-pointer hover:underline" onclick="quickSearch('Silk')">Silk Gown</span></p>
+            
+            <div id="search-results-container" class="mt-8 max-h-[60vh] overflow-y-auto space-y-4">
+                <!-- Search Live Results Rendered Here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section id="hero" class="relative min-h-[85vh] sm:min-h-screen flex items-center justify-center overflow-hidden bg-black">
+        <!-- Hero Background Image Overlay -->
+        <div class="absolute inset-0 z-0 opacity-40 img-zoom-container">
+            <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070&auto=format&fit=crop" alt="ESTEEM Luxury Banner" class="w-full h-full object-cover">
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-t from-esteem-black via-black/40 to-transparent z-0"></div>
+
+        <div class="relative z-10 max-w-4xl mx-auto text-center px-4 sm:px-6 py-20">
+            <p class="text-esteem-gold tracking-[0.4em] uppercase text-xs sm:text-sm font-semibold mb-4">Autumn / Winter Atelier 2026</p>
+            <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white mb-6 leading-tight">
+                Elegance Beyond <br><span class="gold-gradient-text italic font-normal">Conventions</span>
+            </h1>
+            <p class="text-gray-300 text-sm sm:text-lg max-w-2xl mx-auto mb-10 font-light leading-relaxed">
+                Handcrafted garments sculpted with Italian wool, mulberry silk, and uncompromising precision for those who command distinction.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#shop" class="w-full sm:w-auto px-8 py-4 bg-esteem-gold text-black text-xs uppercase tracking-[0.2em] font-bold rounded hover:bg-amber-300 transition-all duration-300 shadow-lg hover:shadow-amber-500/20">
+                    Explore Collection
+                </a>
+                <a href="#about" class="w-full sm:w-auto px-8 py-4 border border-white/30 text-white text-xs uppercase tracking-[0.2em] font-semibold rounded hover:bg-white/10 hover:border-white transition duration-300">
+                    The Craftsmanship
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURED CATEGORIES / COLLECTIONS -->
+    <section id="collections" class="py-20 bg-esteem-dark border-b border-neutral-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                <div>
+                    <span class="text-esteem-gold text-xs uppercase tracking-[0.3em] font-semibold">Curated Drops</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-white mt-2">Signature Collections</h2>
+                </div>
+                <p class="text-gray-400 text-sm max-w-md mt-4 md:mt-0 font-light">
+                    Every garment tells a story of refined heritage, crafted meticulously in limited quantities.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Category Card 1 -->
+                <div onclick="filterByCategory('Men')" class="group relative h-96 rounded-lg overflow-hidden cursor-pointer border border-neutral-800 hover:border-esteem-gold/50 transition">
+                    <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=800&auto=format&fit=crop" alt="Men's Tailoring" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 right-6">
+                        <span class="text-esteem-gold text-[10px] uppercase tracking-widest font-bold">Category</span>
+                        <h3 class="font-serif text-2xl font-bold text-white mt-1">Men's Tailoring</h3>
+                        <p class="text-xs text-gray-300 mt-1 opacity-0 group-hover:opacity-100 transition duration-300">Sharp silhouettes & bespoke wool cuts &rarr;</p>
+                    </div>
+                </div>
+
+                <!-- Category Card 2 -->
+                <div onclick="filterByCategory('Women')" class="group relative h-96 rounded-lg overflow-hidden cursor-pointer border border-neutral-800 hover:border-esteem-gold/50 transition">
+                    <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=800&auto=format&fit=crop" alt="Women's Elegance" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 right-6">
+                        <span class="text-esteem-gold text-[10px] uppercase tracking-widest font-bold">Category</span>
+                        <h3 class="font-serif text-2xl font-bold text-white mt-1">Women's Elegance</h3>
+                        <p class="text-xs text-gray-300 mt-1 opacity-0 group-hover:opacity-100 transition duration-300">Fluid silks & haute couture gowns &rarr;</p>
+                    </div>
+                </div>
+
+                <!-- Category Card 3 -->
+                <div onclick="filterByCategory('Streetwear')" class="group relative h-96 rounded-lg overflow-hidden cursor-pointer border border-neutral-800 hover:border-esteem-gold/50 transition">
+                    <img src="https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?q=80&w=800&auto=format&fit=crop" alt="Luxe Streetwear" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 right-6">
+                        <span class="text-esteem-gold text-[10px] uppercase tracking-widest font-bold">Category</span>
+                        <h3 class="font-serif text-2xl font-bold text-white mt-1">Luxe Streetwear</h3>
+                        <p class="text-xs text-gray-300 mt-1 opacity-0 group-hover:opacity-100 transition duration-300">Elevated heavy cottons & minimalist leisure &rarr;</p>
+                    </div>
+                </div>
+
+                <!-- Category Card 4 -->
+                <div onclick="filterByCategory('Outerwear')" class="group relative h-96 rounded-lg overflow-hidden cursor-pointer border border-neutral-800 hover:border-esteem-gold/50 transition">
+                    <img src="https://images.unsplash.com/photo-1539533018447-63fcce2678e3?q=80&w=800&auto=format&fit=crop" alt="Outerwear" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 right-6">
+                        <span class="text-esteem-gold text-[10px] uppercase tracking-widest font-bold">Category</span>
+                        <h3 class="font-serif text-2xl font-bold text-white mt-1">Cashmere & Outerwear</h3>
+                        <p class="text-xs text-gray-300 mt-1 opacity-0 group-hover:opacity-100 transition duration-300">Pure cashmere coats & trench styles &rarr;</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRODUCT CATALOG SECTION WITH INTERACTIVE FILTERS & SORTING -->
+    <section id="shop" class="py-20 bg-esteem-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-esteem-gold text-xs uppercase tracking-[0.3em] font-semibold">Ready to Wear</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-white mt-2">The Permanent Collection</h2>
+                <div class="w-12 h-0.5 bg-esteem-gold mx-auto mt-4"></div>
+            </div>
+
+            <!-- Filters Bar & Controls -->
+            <div class="bg-esteem-dark p-4 rounded-lg border border-neutral-800 mb-8 flex flex-col lg:flex-row items-center justify-between gap-4">
+                <!-- Filter Tabs -->
+                <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto">
+                    <button onclick="filterByCategory('All')" id="btn-cat-All" class="cat-btn px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded bg-esteem-gold text-black transition">All</button>
+                    <button onclick="filterByCategory('Men')" id="btn-cat-Men" class="cat-btn px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded bg-neutral-800 text-gray-300 hover:text-white transition">Men</button>
+                    <button onclick="filterByCategory('Women')" id="btn-cat-Women" class="cat-btn px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded bg-neutral-800 text-gray-300 hover:text-white transition">Women</button>
+                    <button onclick="filterByCategory('Streetwear')" id="btn-cat-Streetwear" class="cat-btn px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded bg-neutral-800 text-gray-300 hover:text-white transition">Streetwear</button>
+                    <button onclick="filterByCategory('Outerwear')" id="btn-cat-Outerwear" class="cat-btn px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded bg-neutral-800 text-gray-300 hover:text-white transition">Outerwear</button>
+                </div>
+
+                <!-- Secondary Sorting & Price Filter Options -->
+                <div class="flex items-center space-x-4 w-full lg:w-auto justify-between lg:justify-end">
+                    <!-- Size Selector Filter -->
+                    <select id="size-filter" onchange="applyFilters()" class="bg-neutral-800 border border-neutral-700 text-gray-300 text-xs rounded px-3 py-2 focus:outline-none focus:border-esteem-gold">
+                        <option value="All">All Sizes</option>
+                        <option value="S">Small (S)</option>
+                        <option value="M">Medium (M)</option>
+                        <option value="L">Large (L)</option>
+                        <option value="XL">Extra Large (XL)</option>
+                    </select>
+
+                    <!-- Sorting Selection -->
+                    <select id="sort-select" onchange="applyFilters()" class="bg-neutral-800 border border-neutral-700 text-gray-300 text-xs rounded px-3 py-2 focus:outline-none focus:border-esteem-gold">
+                        <option value="featured">Sort: Featured</option>
+                        <option value="low-high">Price: Low to High</option>
+                        <option value="high-low">Price: High to Low</option>
+                        <option value="rating">Top Rated</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Dynamic Product Grid -->
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- JS dynamically renders product cards here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- BRAND STORY & CRAFTSMANSHIP SECTION -->
+    <section id="about" class="py-24 bg-esteem-dark relative border-t border-b border-neutral-800 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="relative">
+                    <div class="relative rounded-lg overflow-hidden border border-neutral-800 shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=1000&auto=format&fit=crop" alt="Tailor Craftsmanship" class="w-full h-[500px] object-cover">
+                    </div>
+                    <div class="absolute -bottom-6 -right-6 bg-esteem-black p-6 rounded-lg border border-esteem-gold/30 hidden sm:block">
+                        <p class="font-serif text-3xl font-bold text-esteem-gold">100%</p>
+                        <p class="text-xs uppercase tracking-widest text-gray-400 mt-1">Ethical Atelier Craft</p>
+                    </div>
+                </div>
+
+                <div class="lg:pl-8">
+                    <span class="text-esteem-gold text-xs uppercase tracking-[0.3em] font-semibold">The ESTEEM Heritage</span>
+                    <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white mt-2 leading-tight">Mastery in Every Thread</h2>
+                    <p class="text-gray-300 text-sm sm:text-base mt-6 font-light leading-relaxed">
+                        Founded in pursuit of quiet luxury, ESTEEM represents an evolution in sartorial perfection. We source our textiles from heritage mills in Biella, Italy, and Kyoto, Japan, pairing centuries-old tailoring techniques with sleek contemporary design.
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-6 mt-8 border-t border-neutral-800 pt-8">
+                        <div>
+                            <h4 class="font-serif text-lg font-bold text-white">Sustainable Luxury</h4>
+                            <p class="text-xs text-gray-400 mt-2">100% organic mulberry silk and ethically harvested Mongolian cashmere.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-serif text-lg font-bold text-white">Bespoke Fit</h4>
+                            <p class="text-xs text-gray-400 mt-2">Contoured patterns designed for flawless drape and effortless movements.</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-8">
+                        <a href="#shop" class="inline-block px-8 py-3 border border-esteem-gold text-esteem-gold text-xs uppercase tracking-[0.2em] font-semibold rounded hover:bg-esteem-gold hover:text-black transition duration-300">
+                            Discover The Atelier
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CLIENTELE REVIEWS / TESTIMONIALS -->
+    <section id="reviews" class="py-20 bg-esteem-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-xl mx-auto mb-16">
+                <span class="text-esteem-gold text-xs uppercase tracking-[0.3em] font-semibold">Testimonials</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-white mt-2">Words From Our Patronage</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Review 1 -->
+                <div class="bg-esteem-dark p-8 rounded-lg border border-neutral-800 relative">
+                    <div class="text-esteem-gold text-sm mb-4">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 text-sm font-light italic leading-relaxed">
+                        "The tailoring on the Royal Tuxedo is unmatched. The drape of the lapel and stitching quality easily rivals Savoy Row bespoke tailoring."
+                    </p>
+                    <div class="mt-6 pt-4 border-t border-neutral-800 flex items-center justify-between">
+                        <div>
+                            <h4 class="text-white text-sm font-semibold">Julian V.</h4>
+                            <span class="text-[10px] text-gray-500 uppercase tracking-wider">Verified Buyer — London</span>
+                        </div>
+                        <i class="fa-solid fa-quote-right text-neutral-700 text-2xl"></i>
+                    </div>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="bg-esteem-dark p-8 rounded-lg border border-neutral-800 relative">
+                    <div class="text-esteem-gold text-sm mb-4">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 text-sm font-light italic leading-relaxed">
+                        "The Silk Evening Gown feels like liquid luxury. Received countless compliments at the Paris Gala. Truly exceptional craftsmanship."
+                    </p>
+                    <div class="mt-6 pt-4 border-t border-neutral-800 flex items-center justify-between">
+                        <div>
+                            <h4 class="text-white text-sm font-semibold">Elena Rostova</h4>
+                            <span class="text-[10px] text-gray-500 uppercase tracking-wider">Verified Buyer — Zurich</span>
+                        </div>
+                        <i class="fa-solid fa-quote-right text-neutral-700 text-2xl"></i>
+                    </div>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="bg-esteem-dark p-8 rounded-lg border border-neutral-800 relative">
+                    <div class="text-esteem-gold text-sm mb-4">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 text-sm font-light italic leading-relaxed">
+                        "Fast worldwide delivery and immaculate packaging. The Cashmere Overcoat is a timeless staple I'll wear for decades."
+                    </p>
+                    <div class="mt-6 pt-4 border-t border-neutral-800 flex items-center justify-between">
+                        <div>
+                            <h4 class="text-white text-sm font-semibold">Marcus Chen</h4>
+                            <span class="text-[10px] text-gray-500 uppercase tracking-wider">Verified Buyer — New York</span>
+                        </div>
+                        <i class="fa-solid fa-quote-right text-neutral-700 text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SHOPPING CART SLIDING SIDEBAR -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity" onclick="toggleCartDrawer()"></div>
+        <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-esteem-dark text-gray-200 border-l border-neutral-800 flex flex-col justify-between">
+                <!-- Cart Header -->
+                <div class="p-6 border-b border-neutral-800 flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-bag-shopping text-esteem-gold text-lg"></i>
+                        <h3 class="font-serif text-lg font-bold text-white tracking-wider">YOUR SHOPPING BAG</h3>
+                    </div>
+                    <button onclick="toggleCartDrawer()" class="text-gray-400 hover:text-white">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+
+                <!-- Cart Items Container -->
+                <div id="cart-items-list" class="p-6 flex-1 overflow-y-auto space-y-4">
+                    <!-- Cart items populated by JavaScript -->
+                </div>
+
+                <!-- Cart Footer Summary -->
+                <div class="p-6 border-t border-neutral-800 bg-esteem-black/50">
+                    <div class="space-y-2 mb-4 text-xs text-gray-400">
+                        <div class="flex justify-between">
+                            <span>Subtotal</span>
+                            <span id="cart-subtotal" class="text-white font-medium">$0.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Estimated Express Shipping</span>
+                            <span class="text-esteem-gold">Free</span>
+                        </div>
+                        <div class="flex justify-between text-sm text-white font-bold pt-2 border-t border-neutral-800">
+                            <span>Total</span>
+                            <span id="cart-total" class="text-esteem-gold">$0.00</span>
+                        </div>
+                    </div>
+
+                    <button onclick="openCheckoutModal()" class="w-full py-4 bg-esteem-gold text-black font-bold uppercase tracking-[0.2em] text-xs rounded hover:bg-amber-300 transition">
+                        Proceed To Checkout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WISHLIST SLIDING SIDEBAR -->
+    <div id="wishlist-drawer" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity" onclick="toggleWishlistDrawer()"></div>
+        <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-esteem-dark text-gray-200 border-l border-neutral-800 flex flex-col">
+                <div class="p-6 border-b border-neutral-800 flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-heart text-esteem-gold text-lg"></i>
+                        <h3 class="font-serif text-lg font-bold text-white tracking-wider">SAVED WISHLIST</h3>
+                    </div>
+                    <button onclick="toggleWishlistDrawer()" class="text-gray-400 hover:text-white">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+                <div id="wishlist-items-list" class="p-6 flex-1 overflow-y-auto space-y-4">
+                    <!-- Wishlist dynamic rendering -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRODUCT DETAIL / QUICK VIEW MODAL -->
+    <div id="quickview-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md hidden">
+        <div class="bg-esteem-dark border border-neutral-800 rounded-lg max-w-4xl w-full overflow-hidden relative max-h-[90vh] flex flex-col md:flex-row">
+            <button onclick="closeQuickView()" class="absolute top-4 right-4 z-10 text-gray-400 hover:text-white bg-black/50 p-2 rounded-full">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <!-- Product Quick Image -->
+            <div class="md:w-1/2 h-64 md:h-auto bg-black relative">
+                <img id="qv-image" src="" alt="" class="w-full h-full object-cover">
+            </div>
+
+            <!-- Product Quick Details -->
+            <div class="md:w-1/2 p-6 sm:p-8 flex flex-col justify-between overflow-y-auto">
+                <div>
+                    <span id="qv-category" class="text-esteem-gold text-[10px] font-bold uppercase tracking-widest">Category</span>
+                    <h2 id="qv-title" class="font-serif text-2xl font-bold text-white mt-1">Product Title</h2>
+                    <div class="flex items-center space-x-2 mt-2">
+                        <div id="qv-rating" class="text-esteem-gold text-xs"></div>
+                        <span id="qv-rating-count" class="text-xs text-gray-400">(4.9 reviews)</span>
+                    </div>
+                    <p id="qv-price" class="text-xl font-bold text-white mt-3">$0.00</p>
+                    <p id="qv-description" class="text-xs text-gray-300 mt-4 leading-relaxed font-light">Product details go here...</p>
+
+                    <!-- Fabric details -->
+                    <div class="mt-4 p-3 bg-neutral-900 rounded border border-neutral-800 text-xs">
+                        <span class="text-esteem-gold font-semibold">Material:</span> <span id="qv-fabric" class="text-gray-300">100% Super 150s Italian Wool</span>
+                    </div>
+
+                    <!-- Size Selector -->
+                    <div class="mt-6">
+                        <label class="block text-xs uppercase tracking-wider text-gray-400 mb-2 font-semibold">Select Size</label>
+                        <div class="flex space-x-3" id="qv-sizes-container">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 space-y-3">
+                    <button id="qv-add-btn" onclick="" class="w-full py-3 bg-esteem-gold text-black font-bold text-xs uppercase tracking-widest rounded hover:bg-amber-300 transition">
+                        Add To Bag
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHECKOUT WORKFLOW MODAL -->
+    <div id="checkout-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md hidden">
+        <div class="bg-esteem-dark border border-neutral-800 rounded-lg max-w-2xl w-full p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+            <!-- Checkout Steps Header -->
+            <div class="flex justify-around border-b border-neutral-800 pb-4 mb-6 text-xs uppercase tracking-widest">
+                <span id="step-tab-1" class="text-esteem-gold font-bold">1. Shipping</span>
+                <span id="step-tab-2" class="text-gray-500 font-bold">2. Payment</span>
+                <span id="step-tab-3" class="text-gray-500 font-bold">3. Confirmation</span>
+            </div>
+
+            <!-- STEP 1: Shipping Details Form -->
+            <div id="checkout-step-1" class="space-y-4">
+                <h3 class="font-serif text-xl font-bold text-white mb-4">Shipping Address</h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="text" id="ship-fname" placeholder="First Name" class="bg-neutral-900 border border-neutral-800 rounded px-4 py-3 text-xs text-white focus:outline-none focus:border-esteem-gold">
+                    <input type="text" id="ship-lname" placeholder="Last Name" class="bg-neutral-900 border border-neutral-800 rounded px-4 py-3 text-xs text-white focus:outline-none focus:border-esteem-gold">
+                </div>
+                <input type="email" id="ship-email" placeholder="Email Address" class="w-full bg-neutral-900 border border-neutral-800 rounded px-4 py-3 text-xs text-white focus:outline-none focus:border-esteem-gold">
+                <input type="text" id="ship-address" placeholder="Street Address" class="w-full bg-neutral-900 border border-neutral-800 rounded px-4 py-3 text-xs text-white focus:outline-none focus:border-esteem-gold">
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="text" id="ship-city" placeholder="City" class="bg-neutral-900 border border-neutral-800 rounded px-4 py-3 text-xs text-white focus:outline-none focus:border-esteem-gold">
+                    <input type="text" id="ship-country" placeholder="Country" class="bg-neutral-900 border border-neutral-800 rounded px-4 py-3 text-xs text-white focus:outline-none focus:border-esteem-gold">
+                </div>
+                <button onclick="goToCheckoutStep(2)" class="w-full mt-6 py-3 bg-esteem-gold text-black font-bold text-xs uppercase tracking-widest rounded hover:bg-amber-300 transition">
+                    Continue to Payment &rarr;
+                </button>
+            </div>
+
+            <!-- STEP 2: Payment Information -->
+            <div id="checkout-step-2" class="space-y-4 hidden">
+                <h3 class="font-serif text-xl font-bold text-white mb-4">Payment Method</h3>
+                <div class="p-4 border border-esteem-gold rounded bg-neutral-900/50 flex items-center justify-between mb-4">
+                    <div class="flex items-center space-x-3">
+                        <i class="fa-solid fa-credit-card text-esteem-gold text-lg"></i>
+                        <span class="text-xs text-white font-medium">Credit / Debit Card</span>
+                    </div>
+                    <i class="fa-solid fa-circle-check text-esteem-gold"></i>
+                </div>
+                <input type="text" placeholder="Cardholder Name" class="w-full bg-neutral-900 border border-neutral-800 rounded px-4 py-3 text-xs text-white focus:outline-none focus:border-esteem-gold">
+                <input type="text" placeholder="Card Number (4532 •••• •••• 8892)" class="w-full bg-neutral-900 border border-neutral-800 rounded px-4 py-3 text-xs text-white focus:outline-none focus:border-esteem-gold">
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="text" placeholder="MM/YY" class="bg-neutral-900 border border-neutral-800 rounded px-4 py-3 text-xs text-white focus:outline-none focus:border-esteem-gold">
+                    <input type="text" placeholder="CVC" class="bg-neutral-900 border border-neutral-800 rounded px-4 py-3 text-xs text-white focus:outline-none focus:border-esteem-gold">
+                </div>
+                <div class="flex space-x-4 mt-6">
+                    <button onclick="goToCheckoutStep(1)" class="w-1/3 py-3 border border-neutral-700 text-gray-300 font-bold text-xs uppercase tracking-widest rounded hover:bg-neutral-800 transition">
+                        Back
+                    </button>
+                    <button onclick="processOrder()" class="w-2/3 py-3 bg-esteem-gold text-black font-bold text-xs uppercase tracking-widest rounded hover:bg-amber-300 transition">
+                        Complete Order & Pay
+                    </button>
+                </div>
+            </div>
+
+            <!-- STEP 3: Order Confirmation Success -->
+            <div id="checkout-step-3" class="text-center py-8 hidden">
+                <div class="w-16 h-16 bg-esteem-gold/20 text-esteem-gold rounded-full flex items-center justify-center mx-auto mb-4 border border-esteem-gold">
+                    <i class="fa-solid fa-check text-2xl"></i>
+                </div>
+                <h3 class="font-serif text-2xl font-bold text-white mb-2">Order Confirmed</h3>
+                <p class="text-xs text-gray-400 max-w-sm mx-auto mb-6">
+                    Thank you for your patronage. Your order number <span id="confirmed-order-id" class="text-esteem-gold font-mono">#EST-98321</span> has been dispatched for private tailored fulfillment.
+                </p>
+                <button onclick="closeCheckoutModal()" class="px-8 py-3 bg-esteem-gold text-black text-xs uppercase font-bold tracking-widest rounded">
+                    Return to Atelier
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 space-y-3 pointer-events-none"></div>
+
+    <!-- FOOTER SECTION -->
+    <footer class="bg-esteem-dark border-t border-neutral-800 text-gray-400 pt-16 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-neutral-800">
+                <!-- Brand Info -->
+                <div class="space-y-4">
+                    <span class="font-serif text-2xl tracking-[0.25em] font-bold text-white uppercase">E S T E E M</span>
+                    <p class="text-xs font-light leading-relaxed text-gray-400">
+                        Defining modern luxury through meticulous Italian craftsmanship, bespoke silhouettes, and sustainable elegance.
+                    </p>
+                    <div class="flex space-x-4 text-gray-400 text-sm">
+                        <a href="#" class="hover:text-esteem-gold transition"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="hover:text-esteem-gold transition"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="#" class="hover:text-esteem-gold transition"><i class="fa-brands fa-pinterest"></i></a>
+                        <a href="#" class="hover:text-esteem-gold transition"><i class="fa-brands fa-x-twitter"></i></a>
+                    </div>
+                </div>
+
+                <!-- Atelier Navigation -->
+                <div>
+                    <h4 class="text-white text-xs font-bold uppercase tracking-widest mb-4">Collections</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#shop" onclick="filterByCategory('Men')" class="hover:text-esteem-gold transition">Men's Tailoring</a></li>
+                        <li><a href="#shop" onclick="filterByCategory('Women')" class="hover:text-esteem-gold transition">Women's Couture</a></li>
+                        <li><a href="#shop" onclick="filterByCategory('Outerwear')" class="hover:text-esteem-gold transition">Cashmere & Outerwear</a></li>
+                        <li><a href="#shop" onclick="filterByCategory('Streetwear')" class="hover:text-esteem-gold transition">Luxe Streetwear</a></li>
+                    </ul>
+                </div>
+
+                <!-- Client Services -->
+                <div>
+                    <h4 class="text-white text-xs font-bold uppercase tracking-widest mb-4">Client Services</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#" class="hover:text-esteem-gold transition">Private Appointments</a></li>
+                        <li><a href="#" class="hover:text-esteem-gold transition">Complimentary Shipping & Returns</a></li>
+                        <li><a href="#" class="hover:text-esteem-gold transition">Garment Care & Maintenance</a></li>
+                        <li><a href="#" class="hover:text-esteem-gold transition">Size Guide & Atelier Measurement</a></li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter Subscription -->
+                <div>
+                    <h4 class="text-white text-xs font-bold uppercase tracking-widest mb-4">Private Gazette</h4>
+                    <p class="text-xs text-gray-400 mb-4">Subscribe to receive exclusive invitations to private collection drops and atelier updates.</p>
+                    <form onsubmit="handleNewsletter(event)" class="space-y-2">
+                        <input type="email" required placeholder="Enter your email" class="w-full bg-neutral-900 border border-neutral-800 rounded px-3 py-2 text-xs text-white focus:outline-none focus:border-esteem-gold">
+                        <button type="submit" class="w-full py-2 bg-esteem-gold text-black text-xs uppercase font-bold tracking-widest rounded hover:bg-amber-300 transition">
+                            Subscribe
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Bottom Copyright & Payment Icons -->
+            <div class="pt-8 flex flex-col md:flex-row items-center justify-between text-xs text-gray-500">
+                <p>&copy; 2026 ESTEEM Apparel House Ltd. All Rights Reserved.</p>
+                <div class="flex items-center space-x-4 mt-4 md:mt-0 text-base">
+                    <i class="fa-brands fa-cc-visa hover:text-white transition"></i>
+                    <i class="fa-brands fa-cc-mastercard hover:text-white transition"></i>
+                    <i class="fa-brands fa-cc-amex hover:text-white transition"></i>
+                    <i class="fa-brands fa-cc-apple-pay hover:text-white transition"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT LOGIC -->
+    <script>
+        // Sample Realistic Product Database
+        const productsDatabase = [
+            {
+                id: 1,
+                title: "Royal Double-Breasted Tuxedo",
+                category: "Men",
+                priceUSD: 1450,
+                rating: 5.0,
+                ratingCount: 28,
+                image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=800&auto=format&fit=crop",
+                fabric: "100% Super 160s Italian Wool & Satin Lapels",
+                sizes: ["S", "M", "L", "XL"],
+                description: "Sculpted tailored jacket paired with sleek tapered trousers, trimmed with pure silk satin peak lapels."
+            },
+            {
+                id: 2,
+                title: "Silk Backless Haute Gown",
+                category: "Women",
+                priceUSD: 1850,
+                rating: 4.9,
+                ratingCount: 34,
+                image: "https://images.unsplash.com/photo-1566174053879-31528523f8ae?q=80&w=800&auto=format&fit=crop",
+                fabric: "100% Pure Mulberry Silk",
+                sizes: ["S", "M", "L"],
+                description: "Fluid silhouette crafted in dark emerald silk with an alluring low back drape and subtle train."
+            },
+            {
+                id: 3,
+                title: "Mongolian Cashmere Trench Coat",
+                category: "Outerwear",
+                priceUSD: 2100,
+                rating: 5.0,
+                ratingCount: 19,
+                image: "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?q=80&w=800&auto=format&fit=crop",
+                fabric: "100% Virgin Mongolian Cashmere",
+                sizes: ["S", "M", "L", "XL"],
+                description: "Unstructured long-line coat offering unmatched warmth and lightweight elegance during winter seasons."
+            },
+            {
+                id: 4,
+                title: "Heavyweight Oversized Luxe Hoodie",
+                category: "Streetwear",
+                priceUSD: 380,
+                rating: 4.8,
+                ratingCount: 52,
+                image: "https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?q=80&w=800&auto=format&fit=crop",
+                fabric: "500 GSM French Terry Organic Cotton",
+                sizes: ["S", "M", "L", "XL"],
+                description: "Architectural boxy cut featuring custom metallic aglets and subtle tonal ESTEEM embroidery."
+            },
+            {
+                id: 5,
+                title: "Structured Bespoke Blazer",
+                category: "Men",
+                priceUSD: 980,
+                rating: 4.7,
+                ratingCount: 15,
+                image: "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?q=80&w=800&auto=format&fit=crop",
+                fabric: "Wool & Cashmere Blend",
+                sizes: ["M", "L", "XL"],
+                description: "Classic single-breasted design engineered with horn buttons and a fitted waist profile."
+            },
+            {
+                id: 6,
+                title: "Pleated Velvet Evening Dress",
+                category: "Women",
+                priceUSD: 1200,
+                rating: 4.9,
+                ratingCount: 22,
+                image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=800&auto=format&fit=crop",
+                fabric: "Italian Silk Velvet",
+                sizes: ["S", "M", "L"],
+                description: "Rich black velvet texture featuring hand-pleated waist detailing and a discreet side slit."
+            },
+            {
+                id: 7,
+                title: "Minimalist Leather Bomber Jacket",
+                category: "Outerwear",
+                priceUSD: 1650,
+                rating: 4.8,
+                ratingCount: 41,
+                image: "https://images.unsplash.com/photo-1521223890158-f9f7c3d5d504?q=80&w=800&auto=format&fit=crop",
+                fabric: "Full-Grain Italian Calfskin Leather",
+                sizes: ["S", "M", "L"],
+                description: "Supple leather bomber jacket fitted with brushed gold metallic hardware and cupro lining."
+            },
+            {
+                id: 8,
+                title: "Monochrome Tailored Joggers",
+                category: "Streetwear",
+                priceUSD: 290,
+                rating: 4.6,
+                ratingCount: 38,
+                image: "https://images.unsplash.com/photo-1552902865-b72c031ac5ea?q=80&w=800&auto=format&fit=crop",
+                fabric: "Cotton & Silk Elastic Blend",
+                sizes: ["S", "M", "L", "XL"],
+                description: "Refined lounge trousers combining executive tailoring lines with modern casual comfort."
+            }
+        ];
+
+        // Application State
+        let currentCurrency = 'USD';
+        let currencyRates = { USD: 1, EUR: 0.92, BDT: 118 };
+        let currencySymbols = { USD: '$', EUR: '€', BDT: '৳' };
+
+        let cart = [];
+        let wishlist = [];
+        let activeCategory = 'All';
+        let selectedQuickViewProduct = null;
+        let selectedQuickViewSize = 'M';
+
+        // Initialize App on DOM Load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            updateCartUI();
+        });
+
+        // Format Price based on Selected Currency
+        function formatPrice(priceInUSD) {
+            const rate = currencyRates[currentCurrency];
+            const symbol = currencySymbols[currentCurrency];
+            const converted = Math.round(priceInUSD * rate);
+            return `${symbol}${converted.toLocaleString()}`;
+        }
+
+        // Currency Switching Handler
+        function changeCurrency(currency) {
+            currentCurrency = currency;
+            document.getElementById('currency-select').value = currency;
+            renderProducts();
+            updateCartUI();
+            updateWishlistUI();
+            showToast(`Currency changed to ${currency}`);
+        }
+
+        // Render Product Cards
+        function renderProducts(filteredList = null) {
+            const grid = document.getElementById('product-grid');
+            let itemsToRender = filteredList || productsDatabase;
+
+            if (itemsToRender.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12 text-gray-500">
+                        <i class="fa-solid fa-box-open text-4xl mb-3"></i>
+                        <p class="text-sm">No luxury garments match your selected criteria.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = itemsToRender.map(p => {
+                const isWishlisted = wishlist.includes(p.id);
+                return `
+                    <div class="group bg-esteem-dark rounded-lg overflow-hidden border border-neutral-800 hover:border-esteem-gold/40 transition-all duration-300 flex flex-col justify-between">
+                        <div class="relative overflow-hidden bg-black h-80 cursor-pointer" onclick="openQuickView(${p.id})">
+                            <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <span class="absolute top-3 left-3 bg-black/70 text-esteem-gold text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded border border-neutral-800">
+                                ${p.category}
+                            </span>
+                            <!-- Wishlist Toggle Button -->
+                            <button onclick="event.stopPropagation(); toggleWishlist(${p.id})" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-esteem-gold hover:text-black transition">
+                                <i class="${isWishlisted ? 'fa-solid text-amber-500' : 'fa-regular'} fa-heart text-xs"></i>
+                            </button>
+                        </div>
+                        <div class="p-5 flex-1 flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-start mb-1">
+                                    <h3 class="font-serif text-base font-semibold text-white group-hover:text-esteem-gold transition cursor-pointer" onclick="openQuickView(${p.id})">
+                                        ${p.title}
+                                    </h3>
+                                </div>
+                                <p class="text-[11px] text-gray-400 font-light line-clamp-1 mb-2">${p.fabric}</p>
+                                <div class="flex items-center space-x-1 text-esteem-gold text-xs mb-3">
+                                    <i class="fa-solid fa-star"></i>
+                                    <span class="text-gray-300 text-xs ml-1 font-semibold">${p.rating.toFixed(1)}</span>
+                                </div>
+                            </div>
+                            <div class="pt-3 border-t border-neutral-800 flex items-center justify-between">
+                                <span class="text-base font-bold text-white">${formatPrice(p.priceUSD)}</span>
+                                <button onclick="addToCart(${p.id})" class="px-3 py-1.5 bg-neutral-800 hover:bg-esteem-gold hover:text-black text-gray-300 text-xs font-semibold rounded transition">
+                                    + Add Bag
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Category Filter Function
+        function filterByCategory(category) {
+            activeCategory = category;
+            
+            // Highlight active category tab
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.classList.remove('bg-esteem-gold', 'text-black');
+                btn.classList.add('bg-neutral-800', 'text-gray-300');
+            });
+            const activeBtn = document.getElementById(`btn-cat-${category}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-neutral-800', 'text-gray-300');
+                activeBtn.classList.add('bg-esteem-gold', 'text-black');
+            }
+
+            applyFilters();
+        }
+
+        // Unified Filter and Sort Logic
+        function applyFilters() {
+            let list = [...productsDatabase];
+
+            // Filter Category
+            if (activeCategory !== 'All') {
+                list = list.filter(p => p.category.toLowerCase() === activeCategory.toLowerCase());
+            }
+
+            // Filter Size
+            const sizeVal = document.getElementById('size-filter').value;
+            if (sizeVal !== 'All') {
+                list = list.filter(p => p.sizes.includes(sizeVal));
+            }
+
+            // Sorting
+            const sortVal = document.getElementById('sort-select').value;
+            if (sortVal === 'low-high') {
+                list.sort((a, b) => a.priceUSD - b.priceUSD);
+            } else if (sortVal === 'high-low') {
+                list.sort((a, b) => b.priceUSD - a.priceUSD);
+            } else if (sortVal === 'rating') {
+                list.sort((a, b) => b.rating - a.rating);
+            }
+
+            renderProducts(list);
+        }
+
+        // Live Search Handling
+        function handleLiveSearch() {
+            const query = document.getElementById('live-search-input').value.toLowerCase().trim();
+            const resultsContainer = document.getElementById('search-results-container');
+
+            if (!query) {
+                resultsContainer.innerHTML = '';
+                return;
+            }
+
+            const matches = productsDatabase.filter(p => 
+                p.title.toLowerCase().includes(query) || 
+                p.category.toLowerCase().includes(query) ||
+                p.fabric.toLowerCase().includes(query)
+            );
+
+            if (matches.length === 0) {
+                resultsContainer.innerHTML = `<p class="text-xs text-gray-400 py-4">No bespoke items found for "${query}"</p>`;
+                return;
+            }
+
+            resultsContainer.innerHTML = matches.map(p => `
+                <div onclick="openQuickView(${p.id}); toggleSearchModal();" class="flex items-center justify-between p-3 bg-neutral-900 hover:bg-neutral-800 rounded border border-neutral-800 cursor-pointer transition">
+                    <div class="flex items-center space-x-3">
+                        <img src="${p.image}" class="w-12 h-12 object-cover rounded">
+                        <div>
+                            <h4 class="text-sm font-semibold text-white">${p.title}</h4>
+                            <span class="text-[10px] text-gray-400">${p.category}</span>
+                        </div>
+                    </div>
+                    <span class="text-xs font-bold text-esteem-gold">${formatPrice(p.priceUSD)}</span>
+                </div>
+            `).join('');
+        }
+
+        function quickSearch(keyword) {
+            document.getElementById('live-search-input').value = keyword;
+            handleLiveSearch();
+        }
+
+        // Quick View Modal
+        function openQuickView(id) {
+            const product = productsDatabase.find(p => p.id === id);
+            if (!product) return;
+
+            selectedQuickViewProduct = product;
+            selectedQuickViewSize = product.sizes[0];
+
+            document.getElementById('qv-image').src = product.image;
+            document.getElementById('qv-title').innerText = product.title;
+            document.getElementById('qv-category').innerText = product.category;
+            document.getElementById('qv-price').innerText = formatPrice(product.priceUSD);
+            document.getElementById('qv-description').innerText = product.description;
+            document.getElementById('qv-fabric').innerText = product.fabric;
+
+            // Render sizes
+            const sizeBox = document.getElementById('qv-sizes-container');
+            sizeBox.innerHTML = product.sizes.map(s => `
+                <button onclick="selectQuickViewSize('${s}')" id="qv-size-${s}" class="qv-size-btn px-4 py-2 text-xs font-bold rounded border ${s === selectedQuickViewSize ? 'border-esteem-gold bg-esteem-gold text-black' : 'border-neutral-700 text-gray-300 hover:border-white'} transition">
+                    ${s}
+                </button>
+            `).join('');
+
+            // Render Rating Stars
+            document.getElementById('qv-rating').innerHTML = '<i class="fa-solid fa-star"></i>'.repeat(Math.floor(product.rating));
+
+            // Set Add button click
+            document.getElementById('qv-add-btn').onclick = () => {
+                addToCart(product.id, selectedQuickViewSize);
+                closeQuickView();
+            };
+
+            document.getElementById('quickview-modal').classList.remove('hidden');
+        }
+
+        function selectQuickViewSize(size) {
+            selectedQuickViewSize = size;
+            document.querySelectorAll('.qv-size-btn').forEach(b => {
+                b.classList.remove('border-esteem-gold', 'bg-esteem-gold', 'text-black');
+                b.classList.add('border-neutral-700', 'text-gray-300');
+            });
+            const btn = document.getElementById(`qv-size-${size}`);
+            if (btn) {
+                btn.classList.remove('border-neutral-700', 'text-gray-300');
+                btn.classList.add('border-esteem-gold', 'bg-esteem-gold', 'text-black');
+            }
+        }
+
+        function closeQuickView() {
+            document.getElementById('quickview-modal').classList.add('hidden');
+        }
+
+        // CART LOGIC
+        function addToCart(productId, size = 'M') {
+            const product = productsDatabase.find(p => p.id === productId);
+            if (!product) return;
+
+            const existingIndex = cart.findIndex(item => item.id === productId && item.size === size);
+            if (existingIndex > -1) {
+                cart[existingIndex].qty += 1;
+            } else {
+                cart.push({ ...product, size: size, qty: 1 });
+            }
+
+            updateCartUI();
+            showToast(`Added ${product.title} to Bag`);
+        }
+
+        function updateCartQuantity(index, change) {
+            if (cart[index]) {
+                cart[index].qty += change;
+                if (cart[index].qty <= 0) {
+                    cart.splice(index, 1);
+                }
+                updateCartUI();
+            }
+        }
+
+        function updateCartUI() {
+            const list = document.getElementById('cart-items-list');
+            const cartCountBadge = document.getElementById('cart-count');
+            
+            const totalQty = cart.reduce((acc, item) => acc + item.qty, 0);
+            cartCountBadge.innerText = totalQty;
+
+            if (cart.length === 0) {
+                list.innerHTML = `
+                    <div class="text-center py-16 text-gray-500">
+                        <i class="fa-solid fa-bag-shopping text-3xl mb-2"></i>
+                        <p class="text-xs">Your shopping bag is empty.</p>
+                    </div>
+                `;
+                document.getElementById('cart-subtotal').innerText = formatPrice(0);
+                document.getElementById('cart-total').innerText = formatPrice(0);
+                return;
+            }
+
+            let subtotalUSD = 0;
+            list.innerHTML = cart.map((item, idx) => {
+                const itemTotalUSD = item.priceUSD * item.qty;
+                subtotalUSD += itemTotalUSD;
+
+                return `
+                    <div class="flex items-center space-x-4 p-3 bg-neutral-900 rounded border border-neutral-800">
+                        <img src="${item.image}" class="w-16 h-16 object-cover rounded">
+                        <div class="flex-1">
+                            <h4 class="text-xs font-bold text-white leading-tight">${item.title}</h4>
+                            <p class="text-[10px] text-gray-400 mt-0.5">Size: ${item.size}</p>
+                            <span class="text-xs font-bold text-esteem-gold">${formatPrice(item.priceUSD)}</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="updateCartQuantity(${idx}, -1)" class="w-6 h-6 rounded bg-neutral-800 text-gray-300 text-xs hover:bg-neutral-700">-</button>
+                            <span class="text-xs text-white font-bold">${item.qty}</span>
+                            <button onclick="updateCartQuantity(${idx}, 1)" class="w-6 h-6 rounded bg-neutral-800 text-gray-300 text-xs hover:bg-neutral-700">+</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('cart-subtotal').innerText = formatPrice(subtotalUSD);
+            document.getElementById('cart-total').innerText = formatPrice(subtotalUSD);
+        }
+
+        // WISHLIST LOGIC
+        function toggleWishlist(productId) {
+            const index = wishlist.indexOf(productId);
+            if (index > -1) {
+                wishlist.splice(index, 1);
+                showToast("Removed from Wishlist");
+            } else {
+                wishlist.push(productId);
+                showToast("Saved to Wishlist");
+            }
+            renderProducts();
+            updateWishlistUI();
+        }
+
+        function updateWishlistUI() {
+            const list = document.getElementById('wishlist-items-list');
+            const badge = document.getElementById('wishlist-count');
+
+            badge.innerText = wishlist.length;
+            badge.style.opacity = wishlist.length > 0 ? "1" : "0";
+
+            if (wishlist.length === 0) {
+                list.innerHTML = `
+                    <div class="text-center py-16 text-gray-500">
+                        <i class="fa-regular fa-heart text-3xl mb-2"></i>
+                        <p class="text-xs">No items saved in wishlist.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const items = productsDatabase.filter(p => wishlist.includes(p.id));
+            list.innerHTML = items.map(item => `
+                <div class="flex items-center justify-between p-3 bg-neutral-900 rounded border border-neutral-800">
+                    <div class="flex items-center space-x-3">
+                        <img src="${item.image}" class="w-12 h-12 object-cover rounded">
+                        <div>
+                            <h4 class="text-xs font-bold text-white">${item.title}</h4>
+                            <span class="text-xs font-bold text-esteem-gold">${formatPrice(item.priceUSD)}</span>
+                        </div>
+                    </div>
+                    <button onclick="addToCart(${item.id}); toggleWishlist(${item.id});" class="px-3 py-1 bg-esteem-gold text-black text-[10px] font-bold uppercase rounded">
+                        Move to Bag
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // CHECKOUT WORKFLOW MODAL LOGIC
+        function openCheckoutModal() {
+            if (cart.length === 0) {
+                showToast("Your shopping bag is empty");
+                return;
+            }
+            toggleCartDrawer();
+            goToCheckoutStep(1);
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+        }
+
+        function goToCheckoutStep(step) {
+            document.getElementById('checkout-step-1').classList.add('hidden');
+            document.getElementById('checkout-step-2').classList.add('hidden');
+            document.getElementById('checkout-step-3').classList.add('hidden');
+
+            document.getElementById(`checkout-step-${step}`).classList.remove('hidden');
+
+            // Header Highlights
+            const t1 = document.getElementById('step-tab-1');
+            const t2 = document.getElementById('step-tab-2');
+            const t3 = document.getElementById('step-tab-3');
+
+            t1.className = step >= 1 ? "text-esteem-gold font-bold" : "text-gray-500 font-bold";
+            t2.className = step >= 2 ? "text-esteem-gold font-bold" : "text-gray-500 font-bold";
+            t3.className = step >= 3 ? "text-esteem-gold font-bold" : "text-gray-500 font-bold";
+        }
+
+        function processOrder() {
+            // Simulated Order Processing
+            cart = [];
+            updateCartUI();
+            goToCheckoutStep(3);
+        }
+
+        // UI DRAWER TOGGLES
+        function toggleCartDrawer() {
+            const drawer = document.getElementById('cart-drawer');
+            drawer.classList.toggle('hidden');
+        }
+
+        function toggleWishlistDrawer() {
+            const drawer = document.getElementById('wishlist-drawer');
+            drawer.classList.toggle('hidden');
+        }
+
+        function toggleSearchModal() {
+            const modal = document.getElementById('search-modal');
+            modal.classList.toggle('hidden');
+            if (!modal.classList.contains('hidden')) {
+                document.getElementById('live-search-input').focus();
+            }
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // TOAST NOTIFICATIONS
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = "bg-esteem-dark border border-esteem-gold/60 text-white px-4 py-3 rounded shadow-2xl text-xs flex items-center space-x-3 transition-all duration-300 transform translate-y-2";
+            toast.innerHTML = `
+                <i class="fa-solid fa-circle-check text-esteem-gold text-sm"></i>
+                <span class="font-medium">${message}</span>
+            `;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', '-translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // NEWSLETTER SUBMISSION
+        function handleNewsletter(e) {
+            e.preventDefault();
+            showToast("Privilege access granted. Welcome to ESTEEM Gazette.");
+            e.target.reset();
+        }
+    </script>
+</body>
+</html>
+```
